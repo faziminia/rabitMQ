@@ -41,6 +41,7 @@ async function connectAsync(config) {
         try {
             mqConn = await amqp.connect(mqConfig.MQServer);
             mqConn.on("error", (err) => {
+                console.error(err.message);
                 if (err.message !== "Connection closing") {
                     console.error("[AMQP] Connection Error");
                     log.error("[AMQP] conn error", err.message);
@@ -48,6 +49,7 @@ async function connectAsync(config) {
                 }
             });
             mqConn.on("close", function () {
+                console.error('[AMQP] Connection Close');
                 console.warn("[AMQP] Connection Close");
                 disconneted = true;
             });
@@ -57,7 +59,7 @@ async function connectAsync(config) {
 
             return resolve(mqConn);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     });
 }
@@ -68,6 +70,7 @@ const startHealthCheck = () => {
             clearInterval(healthInterval);
         } catch (err) {
             console.warn('[AMQP] Health check Faild')
+            console.error(err);
             log.error(err);
         }
     }
