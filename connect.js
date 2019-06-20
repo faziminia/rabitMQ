@@ -23,7 +23,7 @@ const log = bunyan.createLogger({
 });
 
 async function connectAsync(config) {
-    return new Promise((resolve, reject)=>{
+    return new Promise(async (resolve, reject)=>{
 
         // asseration on configuration
         if (!config){
