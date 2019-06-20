@@ -12,22 +12,14 @@ let mqConfig;
 class HealthFailur extends EventEmitter {}
 const healthFailur = new HealthFailur();
 
-const log = bunyan.createLogger({
-    name: "coned_autoenroll_batchIntake_consumer_connect",
-    streams: [{
-        type: 'rotating-file',
-        path: process.env.CONED_AUTOENROLL_CONSUMER_LOGPATH_CONNECT,
-        period: '10d',
-        count: 4
-    }]
-});
+let log;
 
 async function connectAsync(config) {
-    return new Promise(async (resolve, reject)=>{
+    return new Promise(async (resolve, reject) => {
 
         // asseration on configuration
-        if (!config){
-           return reject('Config file required');
+        if (!config) {
+            return reject('Config file required');
         }
 
         //catching the configuration
@@ -35,7 +27,16 @@ async function connectAsync(config) {
         if (mqConn.connection) {
             return resolve(mqConn);
         }
-
+        //setup logger
+        const log = bunyan.createLogger({
+            name: "coned_autoenroll_batchIntake_consumer_connect",
+            streams: [{
+                type: 'rotating-file',
+                path: process.env.CONED_AUTOENROLL_CONSUMER_LOGPATH_CONNECT,
+                period: '10d',
+                count: 4
+            }]
+        });
         console.log("[AMQP] Creating a connection");
         try {
             mqConn = await amqp.connect(mqConfig.MQServer);
@@ -81,14 +82,14 @@ const handleDisconnect = () => {
     }
 }
 
-const reconnect = (channel)=>{
+const reconnect = (channel) => {
     console.log('[AMQP] reconnecting');
-    if (channel){
+    if (channel) {
         channel.close();
-        if (mqConn.close){
+        if (mqConn.close) {
             mqConn.close();
             mqConn = {};
-            setTimeout(()=>healthFailur.emit('connect'), 2000)
+            setTimeout(() => healthFailur.emit('connect'), 2000)
         }
     }
 }
