@@ -1,0 +1,24 @@
+{
+  "name": "rabitmq",
+  "version": "1.0.0",
+  "description": "Connection to rabitMQ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faziminia/rabitMQ.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/faziminia/rabitMQ/issues"
+  },
+  "homepage": "https://github.com/faziminia/rabitMQ#readme",
+  "dependencies": {
+    "amqplib": "^0.5.3",
+    "bunyan": "^1.8.12",
+    "request": "^2.88.0"
+  }
+}
